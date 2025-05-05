@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIf } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-contact',
@@ -13,17 +14,17 @@ import { NgIf } from '@angular/common';
       <div class="bg-white rounded-lg shadow-lg p-6">
         <form 
           [formGroup]="contactForm" 
-          (ngSubmit)="onSubmit()" 
-          name="contact" 
           method="POST" 
+          name="contact"
           data-netlify="true"
           netlify-honeypot="bot-field"
+          action="/contact?success=true"
           class="space-y-6">
           
           <input type="hidden" name="form-name" value="contact" />
-          <div class="hidden">
-            <input name="bot-field" />
-          </div>
+          <p class="hidden">
+            <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+          </p>
 
           <div>
             <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
@@ -80,19 +81,23 @@ import { NgIf } from '@angular/common';
         </form>
 
         <div *ngIf="submitted" class="mt-6 p-4 bg-green-100 text-green-700 rounded-md">
-          Thank you for your message! I'll get back to you soon.
+          <p class="font-medium">Thank you for your message!</p>
+          <p class="mt-1">I'll get back to you as soon as possible.</p>
         </div>
       </div>
     </div>
-  `,
-  styleUrl: './contact.component.scss'
+  `
 })
-export class ContactComponent {
+export class ContactComponent implements OnInit {
   contactForm: FormGroup;
   submitting = false;
   submitted = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -100,41 +105,18 @@ export class ContactComponent {
     });
   }
 
-  onSubmit(): void {
-    if (this.contactForm.valid) {
-      this.submitting = true;
-      
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.setAttribute('data-netlify', 'true');
-      form.setAttribute('name', 'contact');
-
-      // Add form fields
-      const formData = this.contactForm.value;
-      Object.keys(formData).forEach(key => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        input.value = formData[key];
-        form.appendChild(input);
-      });
-
-      // Add form-name field
-      const formNameInput = document.createElement('input');
-      formNameInput.type = 'hidden';
-      formNameInput.name = 'form-name';
-      formNameInput.value = 'contact';
-      form.appendChild(formNameInput);
-
-      // Submit the form
-      document.body.appendChild(form);
-      form.submit();
-      document.body.removeChild(form);
-
-      // Show success message
-      this.submitting = false;
-      this.submitted = true;
-      this.contactForm.reset();
-    }
+  ngOnInit() {
+    // Check if we're returning from a successful form submission
+    this.route.queryParams.subscribe(params => {
+      if (params['success'] === 'true') {
+        this.submitted = true;
+        // Remove the success parameter from the URL without navigating
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: {},
+          replaceUrl: true
+        });
+      }
+    });
   }
 }
