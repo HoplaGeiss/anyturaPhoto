@@ -1,6 +1,6 @@
 [build]
   publish = "dist/anytura-photo/browser"
-  command = "pnpm install && pnpm run build"
+  command = "pnpm install --no-frozen-lockfile && pnpm run build"
 
 [build.environment]
   NODE_VERSION = "18"
