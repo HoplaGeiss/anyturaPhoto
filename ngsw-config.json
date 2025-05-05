@@ -22,7 +22,7 @@
       "resources": {
         "files": [
           "/assets/**",
-          "/*.(svg|cur|jpg|jpeg|png|webp|gif|otf|ttf|woff|woff2)"
+          "/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)"
         ]
       }
     }
@@ -31,12 +31,24 @@
     {
       "name": "images-cache",
       "urls": [
-        "https://picsum.photos/**"
+        "/assets/images/**"
       ],
       "cacheConfig": {
         "maxSize": 100,
         "maxAge": "7d",
         "strategy": "performance"
+      }
+    },
+    {
+      "name": "api-cache",
+      "urls": [
+        "/api/**"
+      ],
+      "cacheConfig": {
+        "maxSize": 100,
+        "maxAge": "1d",
+        "strategy": "freshness",
+        "timeout": "10s"
       }
     }
   ],
@@ -45,5 +57,6 @@
     "!/**/*.*",
     "!/**/*__*",
     "!/**/*__*/**"
-  ]
+  ],
+  "navigationRequestStrategy": "freshness"
 }

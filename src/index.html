@@ -2,13 +2,81 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>AnyturaPhoto</title>
+  <title>Anytura Photography | Professional Photography Portfolio</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Professional photography portfolio showcasing stunning portraits, landscapes, and events. Explore our gallery of high-quality photographs and book your session today.">
+  <meta name="keywords" content="photography, photographer, portfolio, professional photography, portraits, landscapes, events">
+  <meta name="author" content="Anytura Photography">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://anytura-photo.netlify.app/">
+  <meta property="og:title" content="Anytura Photography | Professional Photography Portfolio">
+  <meta property="og:description" content="Professional photography portfolio showcasing stunning portraits, landscapes, and events. Explore our gallery of high-quality photographs.">
+  <meta property="og:image" content="assets/images/og-image.jpg">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://anytura-photo.netlify.app/">
+  <meta name="twitter:title" content="Anytura Photography | Professional Photography Portfolio">
+  <meta name="twitter:description" content="Professional photography portfolio showcasing stunning portraits, landscapes, and events. Explore our gallery of high-quality photographs.">
+  <meta name="twitter:image" content="assets/images/og-image.jpg">
+
+  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="alternate icon" type="image/x-icon" href="favicon.ico">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#1a1a1a">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "PhotographyBusiness",
+      "name": "Anytura Photography",
+      "image": "https://anytura-photo.netlify.app/assets/images/og-image.jpg",
+      "description": "Professional photography portfolio showcasing stunning portraits, landscapes, and events.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "Netherlands"
+      },
+      "url": "https://anytura-photo.netlify.app",
+      "telephone": "",
+      "priceRange": "€€",
+      "sameAs": [
+        "https://instagram.com/anyturaphoto",
+        "https://facebook.com/anyturaphoto"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Photography Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Portrait Photography"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Landscape Photography"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Event Photography"
+            }
+          }
+        ]
+      }
+    }
+  </script>
 </head>
 <body>
   <!-- Hidden form for Netlify -->

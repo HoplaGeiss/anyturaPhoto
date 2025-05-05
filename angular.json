@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "anytura-photo": {
+    "photo-blog": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/anytura-photo",
+            "outputPath": "dist/photo-blog",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -49,8 +49,7 @@
                   "maximumError": "4kb"
                 }
               ],
-              "outputHashing": "all",
-              "serviceWorker": "ngsw-config.json"
+              "outputHashing": "all"
             },
             "development": {
               "optimization": false,
@@ -64,10 +63,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "anytura-photo:build:production"
+              "buildTarget": "photo-blog:build:production"
             },
             "development": {
-              "buildTarget": "anytura-photo:build:development"
+              "buildTarget": "photo-blog:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -75,7 +74,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "anytura-photo:build"
+            "buildTarget": "photo-blog:build"
           }
         },
         "test": {

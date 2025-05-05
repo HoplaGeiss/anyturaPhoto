@@ -1,19 +1,24 @@
 import { Component } from '@angular/core';
+import { OptimizedImageComponent } from '../../components/optimized-image/optimized-image.component';
 
 @Component({
   selector: 'app-about',
   standalone: true,
+  imports: [OptimizedImageComponent],
   template: `
     <div class="py-12 max-w-4xl mx-auto px-4">
       <h1 class="text-4xl font-bold mb-8 text-center">About Me</h1>
       
       <div class="flex flex-col md:flex-row gap-8 items-start">
         <div class="md:w-1/3">
-          <img 
-            src="https://picsum.photos/id/1062/800/800" 
-            alt="Photographer profile" 
+          <app-optimized-image
+            [config]="{
+              src: '/assets/images/profile.jpg',
+              alt: 'Photographer profile',
+              loading: 'eager'
+            }"
             class="w-full rounded-lg shadow-lg"
-          >
+          ></app-optimized-image>
         </div>
         
         <div class="md:w-2/3">

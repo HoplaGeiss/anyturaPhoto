@@ -24,7 +24,7 @@ export class UpdateNotificationComponent implements OnInit {
   constructor(private swUpdate: SwUpdate) {}
 
   ngOnInit() {
-    if (this.swUpdate.isEnabled) {
+    if (this.swUpdate?.isEnabled) {
       this.swUpdate.versionUpdates.subscribe(event => {
         if (event.type === 'VERSION_READY') {
           this.showUpdate = true;
@@ -34,6 +34,8 @@ export class UpdateNotificationComponent implements OnInit {
   }
 
   updateApp() {
-    this.swUpdate.activateUpdate().then(() => document.location.reload());
+    if (this.swUpdate?.isEnabled) {
+      this.swUpdate.activateUpdate().then(() => document.location.reload());
+    }
   }
 } 

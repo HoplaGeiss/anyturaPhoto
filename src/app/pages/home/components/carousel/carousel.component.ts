@@ -1,25 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgFor, NgClass } from '@angular/common';
-
-interface CarouselImage {
-  url: string;
-  title: string;
-  description: string;
-}
+import { OptimizedImageComponent } from '../../../../components/optimized-image/optimized-image.component';
+import { GalleryImage, featuredImages } from '../../../../config/images.config';
 
 @Component({
   selector: 'app-carousel',
   standalone: true,
-  imports: [NgFor, NgClass],
+  imports: [NgFor, NgClass, OptimizedImageComponent],
   template: `
     <div class="relative max-w-5xl mx-auto">
       <div class="overflow-hidden rounded-lg shadow-lg">
         <div class="relative h-[600px]">
-          <img 
-            [src]="images[currentIndex].url" 
-            [alt]="images[currentIndex].title"
-            class="w-full h-full object-cover transition-opacity duration-500"
-          >
+          <app-optimized-image
+            *ngFor="let image of images; let i = index"
+            [config]="{
+              src: image.url,
+              alt: image.title,
+              loading: i === 0 ? 'eager' : 'lazy'
+            }"
+            [class.opacity-0]="i !== currentIndex"
+            [class.opacity-100]="i === currentIndex"
+            class="absolute inset-0 w-full h-full transition-opacity duration-500"
+          ></app-optimized-image>
           <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6 text-white">
             <h3 class="text-2xl font-bold mb-2">{{images[currentIndex].title}}</h3>
             <p>{{images[currentIndex].description}}</p>
@@ -58,34 +60,29 @@ interface CarouselImage {
     }
   `]
 })
-export class CarouselComponent implements OnInit {
-  images: CarouselImage[] = [
-    {
-      url: 'https://picsum.photos/id/1018/1200/800',
-      title: 'Mountain Sunrise',
-      description: 'A breathtaking view of the sunrise over mountain peaks'
-    },
-    {
-      url: 'https://picsum.photos/id/1015/1200/800',
-      title: 'Foggy Forest',
-      description: 'Mystical morning fog rolling through ancient trees'
-    },
-    {
-      url: 'https://picsum.photos/id/1016/1200/800',
-      title: 'Mountain Lake',
-      description: 'Crystal clear waters reflecting majestic mountains'
-    }
-  ];
-
+export class CarouselComponent implements OnInit, OnDestroy {
+  images: GalleryImage[] = featuredImages;
   currentIndex = 0;
-
-  constructor() {}
+  private intervalId: any;
 
   ngOnInit(): void {
-    // Auto-advance the carousel every 5 seconds
-    setInterval(() => {
+    this.startAutoAdvance();
+  }
+
+  ngOnDestroy(): void {
+    this.stopAutoAdvance();
+  }
+
+  private startAutoAdvance(): void {
+    this.intervalId = setInterval(() => {
       this.next();
     }, 5000);
+  }
+
+  private stopAutoAdvance(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
   }
 
   next(): void {

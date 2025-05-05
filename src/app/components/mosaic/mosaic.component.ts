@@ -2,26 +2,28 @@ import { Component, Input } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ImageModalComponent } from '../image-modal/image-modal.component';
-
-interface MosaicImage {
-  url: string;
-  title: string;
-  category: string;
-}
+import { OptimizedImageComponent } from '../optimized-image/optimized-image.component';
+import { GalleryImage, galleryImages } from '../../config/images.config';
 
 @Component({
   selector: 'app-mosaic',
   standalone: true,
-  imports: [NgFor, NgIf, RouterLink, ImageModalComponent],
+  imports: [NgFor, NgIf, RouterLink, ImageModalComponent, OptimizedImageComponent],
   template: `
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <ng-container *ngFor="let image of displayedImages">
         <div 
           class="group relative overflow-hidden rounded-lg shadow-lg aspect-square cursor-pointer"
           (click)="openModal(image)">
-          <img [src]="image.url" 
-               [alt]="image.title"
-               class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+          <app-optimized-image
+            [config]="{
+              src: image.url,
+              alt: image.title,
+              loading: 'lazy',
+              objectFit: 'cover'
+            }"
+            class="w-full h-full"
+          ></app-optimized-image>
           <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
               <h3 class="text-lg font-semibold">{{image.title}}</h3>
@@ -46,85 +48,34 @@ interface MosaicImage {
       [imageUrl]="selectedImage?.url || ''"
       [title]="selectedImage?.title || ''"
       [category]="selectedImage?.category || ''"
+      [description]="selectedImage?.description || ''"
       (closeModal)="closeModal()"
+      class="modal-view"
     ></app-image-modal>
   `,
   styles: [`
     :host {
       display: block;
     }
+
+    :host ::ng-deep app-optimized-image {
+      width: 100%;
+      height: 100%;
+    }
   `]
 })
 export class MosaicComponent {
   @Input() showAll = false;
 
-  allImages: MosaicImage[] = [
-    {
-      url: 'https://picsum.photos/id/1039/1600/1600',
-      title: 'Desert Dawn',
-      category: 'Landscape'
-    },
-    {
-      url: 'https://picsum.photos/id/1033/1600/1600',
-      title: 'Paris Streets',
-      category: 'Urban'
-    },
-    {
-      url: 'https://picsum.photos/id/1036/1600/1600',
-      title: 'Autumn Colors',
-      category: 'Nature'
-    },
-    {
-      url: 'https://picsum.photos/id/1043/1600/1600',
-      title: 'Misty Woods',
-      category: 'Nature'
-    },
-    {
-      url: 'https://picsum.photos/id/1044/1600/1600',
-      title: 'Coastal Sunset',
-      category: 'Seascape'
-    },
-    {
-      url: 'https://picsum.photos/id/1047/1600/1600',
-      title: 'City Nights',
-      category: 'Urban'
-    },
-    // Additional images for the full gallery
-    {
-      url: 'https://picsum.photos/id/1015/1600/1600',
-      title: 'Mountain Lake',
-      category: 'Landscape'
-    },
-    {
-      url: 'https://picsum.photos/id/1018/1600/1600',
-      title: 'Forest Path',
-      category: 'Nature'
-    },
-    {
-      url: 'https://picsum.photos/id/1023/1600/1600',
-      title: 'Urban Life',
-      category: 'Street'
-    },
-    {
-      url: 'https://picsum.photos/id/1024/1600/1600',
-      title: 'Ocean Waves',
-      category: 'Seascape'
-    },
-    {
-      url: 'https://picsum.photos/id/1025/1600/1600',
-      title: 'City Architecture',
-      category: 'Urban'
-    }
-  ];
-
+  allImages: GalleryImage[] = galleryImages;
   isModalOpen = false;
-  selectedImage: MosaicImage | null = null;
+  selectedImage: GalleryImage | null = null;
 
-  get displayedImages(): MosaicImage[] {
+  get displayedImages(): GalleryImage[] {
     return this.showAll ? this.allImages : this.allImages.slice(0, 5);
   }
 
-  openModal(image: MosaicImage): void {
+  openModal(image: GalleryImage): void {
     this.selectedImage = image;
     this.isModalOpen = true;
   }
@@ -134,3 +85,5 @@ export class MosaicComponent {
     this.selectedImage = null;
   }
 }
+
+
