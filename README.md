@@ -1,6 +1,6 @@
-# Photography Blog
+# Anytura Photography
 
-A modern, responsive photography blog built with Angular and Tailwind CSS.
+A modern, responsive photography portfolio built with Angular and Tailwind CSS.
 
 ## Features
 
@@ -11,6 +11,7 @@ A modern, responsive photography blog built with Angular and Tailwind CSS.
 - Contact form
 - Modern UI with animations
 - Mobile-friendly
+- PWA support
 
 ## Prerequisites
 
@@ -22,7 +23,7 @@ A modern, responsive photography blog built with Angular and Tailwind CSS.
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd photo-blog
+cd anytura-photo
 ```
 
 2. Install dependencies:

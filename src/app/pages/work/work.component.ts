@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { MosaicComponent } from '../../components/mosaic/mosaic.component';
-import { RouterLink } from '@angular/router';
-import { ImageModalComponent } from '../../components/image-modal/image-modal.component';
 
 @Component({
   selector: 'app-work',
   standalone: true,
-  imports: [MosaicComponent, RouterLink, ImageModalComponent],
+  imports: [MosaicComponent],
   template: `
     <div class="py-8">
       <section class="max-w-7xl mx-auto px-4">

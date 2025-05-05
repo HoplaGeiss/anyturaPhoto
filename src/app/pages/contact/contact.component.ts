@@ -14,11 +14,10 @@ import { ActivatedRoute, Router } from '@angular/router';
       <div class="bg-white rounded-lg shadow-lg p-6">
         <form 
           [formGroup]="contactForm" 
-          method="POST" 
+          (ngSubmit)="onSubmit()"
           name="contact"
           data-netlify="true"
           netlify-honeypot="bot-field"
-          action="/contact?success=true"
           class="space-y-6">
           
           <input type="hidden" name="form-name" value="contact" />
@@ -73,7 +72,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
           <button 
             type="submit"
-            class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
             [disabled]="contactForm.invalid || submitting"
           >
             {{ submitting ? 'Sending...' : 'Send Message' }}
@@ -84,6 +83,11 @@ import { ActivatedRoute, Router } from '@angular/router';
           <p class="font-medium">Thank you for your message!</p>
           <p class="mt-1">I'll get back to you as soon as possible.</p>
         </div>
+
+        <div *ngIf="error" class="mt-6 p-4 bg-red-100 text-red-700 rounded-md">
+          <p class="font-medium">Sorry, there was an error sending your message.</p>
+          <p class="mt-1">Please try again later or contact me through other means.</p>
+        </div>
       </div>
     </div>
   `
@@ -92,6 +96,7 @@ export class ContactComponent implements OnInit {
   contactForm: FormGroup;
   submitting = false;
   submitted = false;
+  error = false;
 
   constructor(
     private fb: FormBuilder,
@@ -118,5 +123,40 @@ export class ContactComponent implements OnInit {
         });
       }
     });
+  }
+
+  async onSubmit() {
+    if (this.contactForm.invalid) {
+      return;
+    }
+
+    this.submitting = true;
+    this.error = false;
+
+    try {
+      const formData = new FormData();
+      formData.append('form-name', 'contact');
+      Object.keys(this.contactForm.value).forEach(key => {
+        formData.append(key, this.contactForm.value[key]);
+      });
+
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData as any).toString()
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      this.submitted = true;
+      this.contactForm.reset();
+    } catch (err) {
+      console.error('Error submitting form:', err);
+      this.error = true;
+    } finally {
+      this.submitting = false;
+    }
   }
 }

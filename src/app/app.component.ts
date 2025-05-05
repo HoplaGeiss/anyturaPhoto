@@ -3,16 +3,18 @@ import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { Title } from '@angular/platform-browser';
 import { filter } from 'rxjs/operators';
+import { UpdateNotificationComponent } from './components/update-notification/update-notification.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent],
+  imports: [RouterOutlet, HeaderComponent, UpdateNotificationComponent],
   template: `
     <app-header></app-header>
     <main class="container mx-auto px-4">
       <router-outlet></router-outlet>
     </main>
+    <app-update-notification></app-update-notification>
   `,
   styles: [`
     :host {

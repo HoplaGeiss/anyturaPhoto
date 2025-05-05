@@ -1,5 +1,5 @@
 [build]
-  publish = "dist/photo-blog/browser"
+  publish = "dist/anytura-photo/browser"
   command = "ng build"
 
 [[redirects]]
