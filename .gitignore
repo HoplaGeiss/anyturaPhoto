@@ -40,3 +40,11 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Generated optimized images
+src/assets/images/*-optimized.jpg
+src/assets/images/*-*.webp
+
+# Keep original images
+!src/assets/images/*.jpg
+!src/assets/images/*.png
