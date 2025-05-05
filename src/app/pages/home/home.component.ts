@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CarouselComponent } from './components/carousel/carousel.component';
-import { MosaicComponent } from './components/mosaic/mosaic.component';
+import { MosaicComponent } from '../../components/mosaic/mosaic.component';
 
 @Component({
   selector: 'app-home',

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MosaicComponent } from '../home/components/mosaic/mosaic.component';
+import { MosaicComponent } from '../../components/mosaic/mosaic.component';
 import { RouterLink } from '@angular/router';
 import { ImageModalComponent } from '../../components/image-modal/image-modal.component';
 

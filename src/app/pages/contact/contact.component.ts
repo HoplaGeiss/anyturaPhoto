@@ -11,12 +11,26 @@ import { NgIf } from '@angular/common';
       <h1 class="text-4xl font-bold mb-8 text-center">Contact Me</h1>
       
       <div class="bg-white rounded-lg shadow-lg p-6">
-        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <form 
+          [formGroup]="contactForm" 
+          (ngSubmit)="onSubmit()" 
+          name="contact" 
+          method="POST" 
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          class="space-y-6">
+          
+          <input type="hidden" name="form-name" value="contact" />
+          <div class="hidden">
+            <input name="bot-field" />
+          </div>
+
           <div>
             <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
             <input 
               type="text" 
               id="name" 
+              name="name"
               formControlName="name"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               [class.border-red-500]="contactForm.get('name')?.invalid && contactForm.get('name')?.touched"
@@ -31,6 +45,7 @@ import { NgIf } from '@angular/common';
             <input 
               type="email" 
               id="email" 
+              name="email"
               formControlName="email"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               [class.border-red-500]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched"
@@ -44,6 +59,7 @@ import { NgIf } from '@angular/common';
             <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
             <textarea 
               id="message" 
+              name="message"
               formControlName="message"
               rows="5"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -88,12 +104,37 @@ export class ContactComponent {
     if (this.contactForm.valid) {
       this.submitting = true;
       
-      // Simulate API call
-      setTimeout(() => {
-        this.submitting = false;
-        this.submitted = true;
-        this.contactForm.reset();
-      }, 1500);
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.setAttribute('data-netlify', 'true');
+      form.setAttribute('name', 'contact');
+
+      // Add form fields
+      const formData = this.contactForm.value;
+      Object.keys(formData).forEach(key => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = formData[key];
+        form.appendChild(input);
+      });
+
+      // Add form-name field
+      const formNameInput = document.createElement('input');
+      formNameInput.type = 'hidden';
+      formNameInput.name = 'form-name';
+      formNameInput.value = 'contact';
+      form.appendChild(formNameInput);
+
+      // Submit the form
+      document.body.appendChild(form);
+      form.submit();
+      document.body.removeChild(form);
+
+      // Show success message
+      this.submitting = false;
+      this.submitted = true;
+      this.contactForm.reset();
     }
   }
 }
